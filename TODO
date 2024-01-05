@@ -1,0 +1,43 @@
+---> Creating Login Page:
+    Implement a login page with a form for username/email and password.
+    Make a POST request to the provided signin endpoint for authentication. 
+    Handle authentication errors and display appropriate messages.
+    Store the obtained JWT securely.
+
+-->Profile Page:
+    Create a profile page where you can display user information.
+    Use GraphQL queries to fetch data for the user.
+    Display at least three pieces of information (e.g., user identification, XP amount, grades).
+
+--->GraphQL Queries:
+    Use different types of GraphQL queries:
+    Normal queries (e.g., fetching user data).
+    Nested queries (e.g., fetching user data and associated results).
+    Queries with arguments (e.g., fetching specific object details).
+
+-->Statistic Graphs:
+    Design a statistics section on the profile page.
+    Utilize SVG to create at least two different types of graphs based on the provided data.
+        Examples:
+        XP earned over time.
+        XP earned by project.
+        Audit ratio.
+        Projects PASS and FAIL ratio.
+
+-->Logout Functionality:
+    Implement a logout method.
+    Clear the stored JWT and redirect to the login page.
+
+
+-->Testing:
+    Test your components, especially the GraphQL queries.
+    Ensure proper error handling and data retrieval.
+
+-->Styling:
+    Style your components to create a visually appealing UI.
+    Follow UI design principles.
+    Ensure responsiveness.
+
+-->Hosting: 
+    Choose a hosting platform (e.g., GitHub Pages, Netlify).
+    Deploy your application.
