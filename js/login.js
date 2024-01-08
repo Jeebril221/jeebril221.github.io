@@ -1,15 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
     console.log("new DOMContentLoaded ", location.pathname);
     check()
-    // localStorage.clear();
-
 });
 
 const SIGNIN_ENDPOINT = '/auth/signin';
-const mainContainer = document.getElementById('app')
 
 function loadSignInPage(){
-    mainContainer.innerHTML = `
+    document.body.innerHTML = `
     <!-- div for signin -->
     <div class="signin" id="signinContainer">
       <div class="loginContainer login-email">
@@ -30,6 +27,7 @@ function loadSignInPage(){
     </div>
     <!-- end signin div -->
     `;
+    document.head.innerHTML += `<link rel="stylesheet" href="css/styles.css">`
 
     document.getElementById('signin-btn').addEventListener('click', async function (event) {
         event.preventDefault();
@@ -50,13 +48,10 @@ function loadSignInPage(){
 
             if(token){
                 console.log('Successfully authenticated. JWT:', token);
-                // mainContainer.innerHTML = `
-                // <h1>Hello ${username}!</h1>`
                 loadProfile();
                 loginInfo = username
             }
         } catch (error) {
-          // Handle authentication error (display error message to the user, etc.)
             console.error('Login error:', error.message);
             document.getElementById('error-msg').innerHTML = error.message + "Please check your credentials and try again";
             document.getElementById('error-msg').style.color = 'red'

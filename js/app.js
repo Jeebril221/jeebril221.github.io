@@ -50,3 +50,4 @@ async function fetchGraphQLData(query, token) {
     throw new Error('GraphQL API request failed. ');
   }
 }
+
