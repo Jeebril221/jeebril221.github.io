@@ -74,7 +74,7 @@ function Profile(user, audits, chartData, barData){
 
     const newHeader = `
     <title>Talent Profile</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
 
@@ -101,7 +101,7 @@ function Profile(user, audits, chartData, barData){
 
     const newBody = `
     <met#aeb3b8et="utf-8">
-    <div class="container">
+    <div class="container-fluid">
         <div class="row g-5">
             <div class="col-lg-4 sticky-lg-top vh-100">
                 <div class="d-flex flex-column h-100 text-center overflow-auto shadow">
@@ -116,7 +116,6 @@ function Profile(user, audits, chartData, barData){
                         <div class="typed-text d-none">Recode Africa, With African Talents, Zone01 DAKAR</div>
                     </div>
                     <div class="d-flex justify-content-center mt-auto mb-3">
-                        <h4 class="text-primary mt-2">Author : @djibsow</h4>
                         <a class="btn btn-secondary btn-square mx-1" href="#"><i class="fab fa-twitter"></i></a>
                         <a class="btn btn-secondary btn-square mx-1" href="#"><i class="fab fa-facebook-f"></i></a>
                     </div>
@@ -192,34 +191,20 @@ function Profile(user, audits, chartData, barData){
 
                 <!-- Skills Start -->
                 <section class="py-5 border-bottom wow fadeInUp" data-wow-delay="0.1s" id="section2">
-                <h1 class="title mb-5 pb-3 ">Audits Ratio
-                </h1>
-                    <div id="piechart" style="width: 900px; height: 500px;"></div>
+                    <h1 class="title mb-5 pb-3">Audits Ratio</h1>
+                    <div id="piechart" style="width: 100%; height: 400px;"></div>
                 </section>
                 <section class="py-5 border-bottom wow fadeInUp" data-wow-delay="0.1s" id="section2">
-                <h1 class="title mb-5 pb-3 ">Xps of last 10 big projects</h1>
-                    <div id="barChart" style="width: 900px; height: 500px;"></div>
+                    <h1 class="title mb-5 pb-3">Xps of last 10 big projects</h1>
+                    <div id="barChart" style="width: 100%; height: 400px;"></div>
                 </section>
+            
                 <!-- Skills End -->
 
                 <!-- Footer Start -->
                 <section class="wow fadeIn" data-wow-delay="0.1s">
                     <div class="bg-secondary text-light text-center p-5">
-                        <div class="d-flex justify-content-center mb-4">
-                            <a class="btn btn-dark btn-square mx-1" href="#"><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-dark btn-square mx-1" href="#"><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-dark btn-square mx-1" href="#"><i class="fab fa-linkedin-in"></i></a>
-                            <a class="btn btn-dark btn-square mx-1" href="#"><i class="fab fa-instagram"></i></a>
-                        </div>
-                        <div class="d-flex justify-content-center mb-3">
-                            <a class="text-light px-3 border-end" href="#">Privacy</a>
-                            <a class="text-light px-3 border-end" href="#">Terms</a>
-                            <a class="text-light px-3 border-end" href="#">FAQs</a>
-                            <a class="text-light px-3" href="#">Help</a>
-                        </div>
-                        
-                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                        <p class="m-0">&copy; All Rights Reserved. Designed by <a href="https://htmlcodex.com">HTML Codex</a></p>
+                        <p class="m-0">&copy; All Rights Reserved. Designed by <a href="https://learn.zone01dakar.sn/git/djibsow">@jeebril_sow</a></p>
                     </div>
                 </section>
                 <!-- Footer End -->
@@ -280,7 +265,6 @@ function addAudits(audits) {
 
     parentElement.appendChild(title);
 
-    // Créez une nouvelle div pour contenir chaque groupe de 6 éléments
     var rowContainer = document.createElement('div');
     rowContainer.classList.add('d-flex', 'flex-wrap');
 
@@ -290,13 +274,11 @@ function addAudits(audits) {
         }
 
         var newAudit = document.createElement('div');
-        newAudit.classList.add('position-relative', 'mb-4', 'col-md-4'); // Définissez la largeur de chaque élément à 4 colonnes sur les écrans moyens
+        newAudit.classList.add('position-relative', 'mb-4', 'col-md-4'); 
 
         var flecheIcon = document.createElement('span');
         flecheIcon.classList.add('bi', 'bi-arrow-right', 'fs-4', 'text-light', 'position-absolute');
         flecheIcon.style.top = '-5px';
-
-        // Ajustez la valeur '50px' selon vos besoins pour décaler vers la droite
         flecheIcon.style.left = '-30px';
 
         var titreElement = document.createElement('h5');
@@ -317,15 +299,12 @@ function addAudits(audits) {
         newAudit.appendChild(titreElement);
         newAudit.appendChild(entrepriseElement);
 
-        // Ajoutez l'élément à la div de la ligne
         rowContainer.appendChild(newAudit);
 
-        // Si nous avons atteint 6 éléments ou si c'est le dernier élément, ajoutez la ligne à parentElement
-        if ((index + 1) % 6 === 0 || index === audits.length - 1) {
+        if ((index + 1) % 4 === 0 || index === audits.length - 1) {
             parentElement.appendChild(rowContainer);
-            // Créez une nouvelle ligne pour les éléments suivants
             rowContainer = document.createElement('div');
-            rowContainer.classList.add('d-flex', 'flex-wrap');
+            rowContainer.classList.add('row');
         }
     });
 }
@@ -340,26 +319,25 @@ function drawPieChartRatio(chartContainer, dataValues, chartTitle) {
     var options = {
         title: chartTitle,
         backgroundColor: '#2C3E50',
-        pieSliceBorderColor: 'white',  
-        pieSliceText: 'percentage',    
+        pieSliceBorderColor: 'white',
+        pieSliceText: 'percentage',
         pieSliceTextStyle: {
-        color: 'white',              
-        fontSize: 14                 
+            color: 'white',
+            fontSize: 14
         },
         legend: {
-        textStyle: {
-            fontSize: 12,
-            color: 'white'               
-        }
+            textStyle: {
+                fontSize: 12,
+                color: 'white'
+            }
         },
-        pieHole: 0.5, // Réglez la taille du trou intérieur pour créer un donut chart
+        pieHole: 0.5,
         slices: {
-            0: { color: 'green' }, // Changez la couleur du premier segment
-            1: { color: 'red' }, // Changez la couleur du deuxième segment
-            // Ajoutez d'autres segments avec des couleurs personnalisées si nécessaire
+            0: { color: 'green' },
+            1: { color: 'red' },
         },
-
     };
+    
 
         var chart = new google.visualization.PieChart(chartContainer);
         chart.draw(data, options);
@@ -376,19 +354,18 @@ function drawBarChart(chartContainer, dataValues, chartTitle, xLabel, yLabel) {
       var options = {
         title: chartTitle,
         hAxis: {
-          title: xLabel,
+            title: xLabel,
         },
         vAxis: {
-          title: yLabel,
+            title: yLabel,
         },
-        // backgroundColor: '#2C3E50',
         backgroundColor: 'white',
+        bars: 'vertical',
+        colors: ['#3366CC'],
+    };
+    
 
-        bars: 'vertical', // Type de diagramme en barres
-        colors: ['#3366CC'], // Couleur des barres
-      };
-  
-      var chart = new google.visualization.BarChart(chartContainer);
-      chart.draw(data, options);
+        var chart = new google.visualization.BarChart(chartContainer);
+        chart.draw(data, options);
     }
 }

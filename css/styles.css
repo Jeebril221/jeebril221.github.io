@@ -1,3 +1,9 @@
+:root {
+  --primary: #00B87B;
+  --secondary: #314355;
+  --light: #F2F2F2;
+  --dark: #2C3E50;
+}
 
 * {
   margin: 0;
@@ -10,12 +16,14 @@ body {
   width: 100%;
   min-height: 100vh;
   opacity: 0.9;
-  background-image: radial-gradient(#0074d9 1.1px, transparent 1.1px), radial-gradient(#0074d9 1.1px, #f6f6f7 1.1px);
   background-size: 44px 44px;
   background-position: 0 0, 22px 22px;
   display: flex;
   justify-content: center;
   align-items: center;
+  background: var(--dark);
+
+  
 }
 
 .signin{
@@ -32,7 +40,7 @@ body {
   .loginContainer {
     width: 400px;
     min-height: 400px;
-    background: #fff;
+    background: var(--primary);
     border-radius: 10px;
     box-shadow: 0 0 5px rgba(52, 52, 52, 0.3);
     padding: 40px 30px;
@@ -70,7 +78,7 @@ body {
     padding: 15px 20px;
     text-align: center;
     border: none;
-    background: #0074d9;
+    background: var(--secondary);
     outline: none;
     border-radius: 30px;
     font-size: 1.2rem;
