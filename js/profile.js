@@ -27,12 +27,29 @@ async function loadProfile() {
                 }
               }
               
-              `, authToken);
+        `, authToken);
         const audits = userAudits.data.audit
-        console.log("User  Audits", userAudits);
 
-        Profile(user)
-        addAudits(audits)
+        const ratioData = await fetchGraphQLData(query4, authToken);
+        const ratio = ratioData.data.user[0]
+
+        const chartData = [
+            ['Task', 'Hours per Day'],
+            ['done', ratio.upAmount.aggregate.sum.amount],
+            ['received', ratio.downAmount.aggregate.sum.amount],
+        ];
+
+        const datas = await fetchGraphQLData(query3, authToken);
+        const barData = datas.data.user[0].xps
+
+        const barChartData = [
+            ['Path', 'Amount'],
+            ...barData.map(item => [item.path.split('/dakar/div-01/')[1], item.amount]),
+        ];
+        console.log("dataaaas", user);
+        
+        Profile(user, audits, chartData, barChartData)
+
         document.getElementById('logout').addEventListener('click', function (e) {
             e.preventDefault();
             localStorage.clear();
@@ -41,31 +58,23 @@ async function loadProfile() {
 
     } catch (error) {
         console.error('Error loading profile:', error.message);
-        // Handle error, for example, redirect to login page
-        // loadSignInPage();
     }
 }
 
-
-function Profile(user){
-
+function Profile(user, audits, chartData, barData){
     const dateOfBirthString = user.attrs.dateOfBirth;
     const dateOfBirth = new Date(dateOfBirthString);
 
     const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
     const formattedDate = dateOfBirth.toLocaleDateString('en-US', options);
 
-    const ratio =  Math.round((user.auditRatio)*10 )/ 10
+    const ratio =  Math.round((user.auditRatio)*10)/ 10
     const xps = user.xp.aggregate.sum.amount
     const xp = Math.ceil(xps/1000);
 
     const newHeader = `
-    <met#aeb3b8et="utf-8">
     <title>Talent Profile</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Free Website Template" name="keywords">
-    <meta content="Free Website Template" name="description">
-
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
 
@@ -91,6 +100,7 @@ function Profile(user){
     `
 
     const newBody = `
+    <met#aeb3b8et="utf-8">
     <div class="container">
         <div class="row g-5">
             <div class="col-lg-4 sticky-lg-top vh-100">
@@ -144,6 +154,15 @@ function Profile(user){
                     </div>
                     </div>
                     <div class="row g-4">
+                    <div class="col-md-4 col-lg-6 col-xl-4">
+                    <div class="d-flex bg-secondary p-4">
+                        <h1 class="flex-shrink-0 display-5 text-primary mb-0" data-toggle="counter-up">${user.transactions[0].amount}</h1>
+                            <div class="ps-3">
+                                <p class="mb-0">Your</p>
+                                <h5 class="mb-0">Level</h5>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-md-4 col-lg-6 col-xl-4">
                             <div class="d-flex bg-secondary p-4">
                                 <h1 class="flex-shrink-0 display-5 text-primary mb-0" data-toggle="counter-up">${xp}</h1>
@@ -172,68 +191,14 @@ function Profile(user){
                 <!-- Expericence End -->
 
                 <!-- Skills Start -->
-                <section class="py-5 border-bottom wow fadeInUp" data-wow-delay="0.1s">
-                    <h1 class="title pb-3 mb-5">Skills</h1>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="skill mb-4">
-                                <div class="d-flex justify-content-between">
-                                    <p class="mb-2">HTML</p>
-                                    <p class="mb-2">95%</p>
-                                </div>
-                                <div class="progress">
-                                    <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                            <div class="skill mb-4">
-                                <div class="d-flex justify-content-between">
-                                    <p class="mb-2">CSS</p>
-                                    <p class="mb-2">85%</p>
-                                </div>
-                                <div class="progress">
-                                    <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                            <div class="skill mb-4">
-                                <div class="d-flex justify-content-between">
-                                    <p class="mb-2">PHP</p>
-                                    <p class="mb-2">90%</p>
-                                </div>
-                                <div class="progress">
-                                    <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="skill mb-4">
-                                <div class="d-flex justify-content-between">
-                                    <p class="mb-2">Javascript</p>
-                                    <p class="mb-2">90%</p>
-                                </div>
-                                <div class="progress">
-                                    <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                            <div class="skill mb-4">
-                                <div class="d-flex justify-content-between">
-                                    <p class="mb-2">Angular JS</p>
-                                    <p class="mb-2">95%</p>
-                                </div>
-                                <div class="progress">
-                                    <div class="progress-bar bg-success" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                            <div class="skill mb-4">
-                                <div class="d-flex justify-content-between">
-                                    <p class="mb-2">Wordpress</p>
-                                    <p class="mb-2">85%</p>
-                                </div>
-                                <div class="progress">
-                                    <div class="progress-bar bg-info" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <section class="py-5 border-bottom wow fadeInUp" data-wow-delay="0.1s" id="section2">
+                <h1 class="title mb-5 pb-3 ">Audits Ratio
+                </h1>
+                    <div id="piechart" style="width: 900px; height: 500px;"></div>
+                </section>
+                <section class="py-5 border-bottom wow fadeInUp" data-wow-delay="0.1s" id="section2">
+                <h1 class="title mb-5 pb-3 ">Xps of last 10 big projects</h1>
+                    <div id="barChart" style="width: 900px; height: 500px;"></div>
                 </section>
                 <!-- Skills End -->
 
@@ -265,7 +230,7 @@ function Profile(user){
     
     <!-- Back to Top -->
     <a href="#" class="back-to-top"><i class="fa fa-angle-double-up"></i></a>
-    
+
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
@@ -285,39 +250,54 @@ function Profile(user){
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
     <script src="js/app.js"></script>
-    <script src="js/login.js"></script>
+    <script type="module" src="js/login.js"></script>
     <script src="js/profile.js"></script>
     <script src="js/statisticgraph.js"></script>
     <script src="js/graphql.js"></script>
     `
 
-    
     document.head.innerHTML = newHeader;
     document.body.innerHTML = newBody;
+
+    addAudits(audits)
+
+    const chartContainer = document.getElementById('piechart');
+    const chartTitle = '';
+    drawPieChartRatio(chartContainer, chartData, chartTitle);
+
+    const xLabel = 'Projects';
+    const yLabel = 'Values';
+    const chartBarContainer = document.getElementById('barChart');
+    drawBarChart(chartBarContainer, barData, xLabel, yLabel);
+    
 }
 
 function addAudits(audits) {
-    console.log("auditsss ", audits);
-
     var parentElement = document.getElementById('section');
     const title = document.createElement('h1');
     title.classList.add('title', 'mb-5', 'pb-3');
-    title.textContent = 'Your last 10 audits'
+    title.textContent = 'Your last 10 audits';
 
-    parentElement.appendChild(title)
-    audits.forEach(function (audit) {
-        console.log("audiiit ", audit);
+    parentElement.appendChild(title);
+
+    // Créez une nouvelle div pour contenir chaque groupe de 6 éléments
+    var rowContainer = document.createElement('div');
+    rowContainer.classList.add('d-flex', 'flex-wrap');
+
+    audits.forEach(function (audit, index) {
         if (audit.grade === null) {
             return;
         }
-        
+
         var newAudit = document.createElement('div');
-        newAudit.classList.add('position-relative', 'mb-4');
+        newAudit.classList.add('position-relative', 'mb-4', 'col-md-4'); // Définissez la largeur de chaque élément à 4 colonnes sur les écrans moyens
 
         var flecheIcon = document.createElement('span');
         flecheIcon.classList.add('bi', 'bi-arrow-right', 'fs-4', 'text-light', 'position-absolute');
         flecheIcon.style.top = '-5px';
-        flecheIcon.style.left = '-50px';
+
+        // Ajustez la valeur '50px' selon vos besoins pour décaler vers la droite
+        flecheIcon.style.left = '-30px';
 
         var titreElement = document.createElement('h5');
         titreElement.classList.add('mb-1');
@@ -336,8 +316,79 @@ function addAudits(audits) {
         newAudit.appendChild(flecheIcon);
         newAudit.appendChild(titreElement);
         newAudit.appendChild(entrepriseElement);
-        // newAudit.appendChild(descriptionElement);
 
-        parentElement.appendChild(newAudit);
+        // Ajoutez l'élément à la div de la ligne
+        rowContainer.appendChild(newAudit);
+
+        // Si nous avons atteint 6 éléments ou si c'est le dernier élément, ajoutez la ligne à parentElement
+        if ((index + 1) % 6 === 0 || index === audits.length - 1) {
+            parentElement.appendChild(rowContainer);
+            // Créez une nouvelle ligne pour les éléments suivants
+            rowContainer = document.createElement('div');
+            rowContainer.classList.add('d-flex', 'flex-wrap');
+        }
     });
+}
+
+function drawPieChartRatio(chartContainer, dataValues, chartTitle) {
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+    var data = google.visualization.arrayToDataTable(dataValues);
+
+    var options = {
+        title: chartTitle,
+        backgroundColor: '#2C3E50',
+        pieSliceBorderColor: 'white',  
+        pieSliceText: 'percentage',    
+        pieSliceTextStyle: {
+        color: 'white',              
+        fontSize: 14                 
+        },
+        legend: {
+        textStyle: {
+            fontSize: 12,
+            color: 'white'               
+        }
+        },
+        pieHole: 0.5, // Réglez la taille du trou intérieur pour créer un donut chart
+        slices: {
+            0: { color: 'green' }, // Changez la couleur du premier segment
+            1: { color: 'red' }, // Changez la couleur du deuxième segment
+            // Ajoutez d'autres segments avec des couleurs personnalisées si nécessaire
+        },
+
+    };
+
+        var chart = new google.visualization.PieChart(chartContainer);
+        chart.draw(data, options);
+    }
+}
+
+function drawBarChart(chartContainer, dataValues, chartTitle, xLabel, yLabel) {
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable(dataValues);
+  
+      var options = {
+        title: chartTitle,
+        hAxis: {
+          title: xLabel,
+        },
+        vAxis: {
+          title: yLabel,
+        },
+        // backgroundColor: '#2C3E50',
+        backgroundColor: 'white',
+
+        bars: 'vertical', // Type de diagramme en barres
+        colors: ['#3366CC'], // Couleur des barres
+      };
+  
+      var chart = new google.visualization.BarChart(chartContainer);
+      chart.draw(data, options);
+    }
 }

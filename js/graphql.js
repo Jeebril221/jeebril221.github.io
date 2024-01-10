@@ -1,6 +1,9 @@
 const queryUser = `
 {
     user{
+      transactions(where: { type: { _eq: "level" } }, order_by: { amount: desc }, limit: 1) {
+        amount
+      }
         id, 
         login,
         firstName,
@@ -30,47 +33,43 @@ const queryUser = `
 }
 `
 
-const last3BigProjects = (xp) => {
-    const query =  `
-    {
-        user{
-        transactions(where: {
-          type: {_like: ${xp}}
-        }
-        order_by: {amount: desc}
-        limit: 5)
-        {
-          amount
-          path
-        }
-      
-      }
+const lastBigProjects =  `
+{
+    user{
+    transactions(where: {
+      type: {_like: "xp"}
     }
-    
-    `
-    return query
+    limit: 7)
+    {
+      amount
+      path
+    }
+  
+  }
 }
+`
 
 //recup les exos validés avec leurs xps
 const query3 = `
 {
-    user {
-      xps(
-        where: {
-          _and: [
-            { path: { _nlike: "%/piscine-js/%" } },
-            { path: { _nlike: "%/piscine-go/%" } },
-            { path: { _nlike: "%/checkpoint/%" } }
-          ]
-        },
-        order_by: { amount: desc }
-      ) {
-        amount
-        path
-        userId
-      }
+  user {
+    xps(
+      where: {
+        _and: [
+          { path: { _nlike: "%/piscine-js/%" } },
+          { path: { _nlike: "%/piscine-go/%" } },
+          { path: { _nlike: "%/checkpoint/%" } }
+        ]
+      },
+      order_by: { amount: desc }
+      limit: 10
+    ) {
+      path
+      amount
     }
-}`
+  }
+}
+`
 
 //User up down ration
 const query4 = `
@@ -91,7 +90,8 @@ const query4 = `
         }
       }
     }
-}`
+}
+`
 
 //level amount
 const query5 = `
@@ -100,7 +100,8 @@ const query5 = `
         transactions(where: {type: {_eq: "level"}} order_by: {amount: desc} limit: 1){
           amount
           type
-            path
+          path
         }
     }
-}` 
+}
+` 

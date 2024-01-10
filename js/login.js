@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("new DOMContentLoaded ", location.pathname);
-    check()
+  console.log("new DOMContentLoaded ", location.pathname);
+  check()
 });
 
 const SIGNIN_ENDPOINT = '/auth/signin';
@@ -27,8 +27,6 @@ function loadSignInPage(){
     </div>
     <!-- end signin div -->
     `;
-    document.head.innerHTML += `<link rel="stylesheet" href="css/styles.css">`
-
     document.getElementById('signin-btn').addEventListener('click', async function (event) {
         event.preventDefault();
         console.log("button clicked");
