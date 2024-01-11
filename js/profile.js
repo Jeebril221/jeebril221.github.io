@@ -46,7 +46,7 @@ async function loadProfile() {
             ['Path', 'Amount'],
             ...barData.map(item => [item.path.split('/dakar/div-01/')[1], item.amount]),
         ];
-        console.log("dataaaas", user);
+        // console.log("dataaaas", user);
         
         Profile(user, audits, chartData, barChartData)
 

@@ -4,7 +4,6 @@ const queryUser = `
       transactions(where: { type: { _eq: "level" } }, order_by: { amount: desc }, limit: 1) {
         amount
       }
-        id, 
         login,
         firstName,
         lastName,

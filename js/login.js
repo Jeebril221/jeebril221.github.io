@@ -31,7 +31,7 @@ function loadSignInPage(){
 
     document.getElementById('signin-btn').addEventListener('click', async function (event) {
         event.preventDefault();
-        console.log("button clicked");
+        // console.log("button clicked");
 
         const username = document.getElementById('username').value.trim();
         const password = document.getElementById('password').value.trim();
@@ -47,7 +47,7 @@ function loadSignInPage(){
             // Redirect or perform other actions upon successful authentication
 
             if(token){
-                console.log('Successfully authenticated. JWT:', token);
+                console.log('Successfully authenticated. ' );
                 loadProfile();
                 loginInfo = username
             }
@@ -67,7 +67,7 @@ async function signIn(credentials) {
         const token = await fetchData(SIGNIN_ENDPOINT, 'POST', null, authHeader);
         // Store the obtained JWT securely (in this case, using localStorage)
         localStorage.setItem('jwtToken', token);
-        console.log("token from signin ", token);
+        // console.log("token from signin ", token);
 
         return token;
 
@@ -79,7 +79,7 @@ async function signIn(credentials) {
 
 function check(){
     if (localStorage.getItem('jwtToken')) {
-      console.log("i aaaaam hereeeee");
+      // console.log("i aaaaam hereeeee");
         loadProfile();
     } else {
         loadSignInPage();
