@@ -8,7 +8,7 @@ async function loadProfile() {
             `{
                 audit(
                   where: {
-                    auditorLogin: { _like: "djibsow" },
+                    auditorLogin: { _like: ${user.login} },
                   }
                   limit: 20
                   order_by: {createdAt: desc}
