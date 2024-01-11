@@ -341,3 +341,4 @@ function drawBarChart(chartContainer, dataValues, chartTitle, xLabel, yLabel) {
         chart.draw(data, options);
     }
 }
+
