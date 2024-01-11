@@ -1,35 +1,32 @@
 const queryUser = `
 {
-    user{
-      transactions(where: { type: { _eq: "level" } }, order_by: { amount: desc }, limit: 1) {
-        amount
-      }
-        login,
-        firstName,
-        lastName,
-        email,
-        attrs
-        campus,
-        auditRatio
-
-        xp: transactions_aggregate(
-            where: {
-              type: { _like: "xp" },
-              _and: [
-                { path: { _nlike: "%/piscine-js/%" } },
-                { path: { _nlike: "%/piscine-go/%" } },
-              ]
-            }
-            order_by: { amount: desc }
-          ) {
-            aggregate {
-              sum {
-                amount
-              }
-            }
+  user{
+      login,
+      firstName,
+      lastName,
+      email,
+      attrs
+      campus,
+      auditRatio
+    }
+      xp: transaction_aggregate(
+        where: {
+          _and: [
+            { type: { _eq: "xp" } },
+            { path: { _nlike: "%/piscine-js/%" } },
+            { path: { _nlike: "%/piscine-go/%" } }
+          ]
+        }
+      ) {
+        aggregate {
+          sum {
+            amount
           }
-    },
-}
+        }
+      }
+    
+  },
+
 `
 
 const lastBigProjects =  `
@@ -95,12 +92,18 @@ const query4 = `
 //level amount
 const query5 = `
 {
-    user{
-        transactions(where: {type: {_eq: "level"}} order_by: {amount: desc} limit: 1){
-          amount
-          type
-          path
+  transaction(
+            where: {
+          _and: [
+            { type: { _eq: "level" } },
+            { path: { _nlike: "%/piscine-js/%" } },
+            { path: { _nlike: "%/piscine-go/%" } }
+          ]
         }
-    }
+    order_by:{amount: desc}
+    limit: 1
+  ) {
+    amount
+  }
 }
 ` 

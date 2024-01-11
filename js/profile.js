@@ -3,7 +3,12 @@ async function loadProfile() {
         const authToken = localStorage.getItem('jwtToken');
 
         const userData = await fetchGraphQLData(queryUser, authToken);
+        const level = await fetchGraphQLData(query5, authToken);
+        // console.log("dataaaas", level);
+
         const user = userData.data.user[0]
+        const xp = userData.data.xp.aggregate.sum.amount
+
         const userAudits = await fetchGraphQLData(
             `{
                 audit(
@@ -46,9 +51,8 @@ async function loadProfile() {
             ['Path', 'Amount'],
             ...barData.map(item => [item.path.split('/dakar/div-01/')[1], item.amount]),
         ];
-        // console.log("dataaaas", user);
         
-        Profile(user, audits, chartData, barChartData)
+        Profile(xp, user, audits, chartData, barChartData, level)
 
         document.getElementById('logout').addEventListener('click', function (e) {
             e.preventDefault();
@@ -61,7 +65,7 @@ async function loadProfile() {
     }
 }
 
-function Profile(user, audits, chartData, barData){
+function Profile(xp, user, audits, chartData, barData, level){
     const dateOfBirthString = user.attrs.dateOfBirth;
     const dateOfBirth = new Date(dateOfBirthString);
 
@@ -69,8 +73,7 @@ function Profile(user, audits, chartData, barData){
     const formattedDate = dateOfBirth.toLocaleDateString('en-US', options);
 
     const ratio =  Math.round((user.auditRatio)*10)/ 10
-    const xps = user.xp.aggregate.sum.amount
-    const xp = Math.ceil(xps/1000);
+    const xps = Math.ceil(xp/1000);
 
     const newBody = `
     <met#aeb3b8et="utf-8">
@@ -128,7 +131,7 @@ function Profile(user, audits, chartData, barData){
                     <div class="row g-4">
                     <div class="col-md-4 col-lg-6 col-xl-4">
                     <div class="d-flex bg-secondary p-4">
-                        <h1 class="flex-shrink-0 display-5 text-primary mb-0" data-toggle="counter-up">${user.transactions[0].amount}</h1>
+                        <h1 class="flex-shrink-0 display-5 text-primary mb-0" data-toggle="counter-up">${level.data.transaction[0].amount}</h1>
                             <div class="ps-3">
                                 <p class="mb-0">Your</p>
                                 <h5 class="mb-0">Level</h5>
@@ -137,7 +140,7 @@ function Profile(user, audits, chartData, barData){
                         </div>
                         <div class="col-md-4 col-lg-6 col-xl-4">
                             <div class="d-flex bg-secondary p-4">
-                                <h1 class="flex-shrink-0 display-5 text-primary mb-0" data-toggle="counter-up">${xp}</h1>
+                                <h1 class="flex-shrink-0 display-5 text-primary mb-0" data-toggle="counter-up">${xps}</h1>
                                 <div class="ps-3">
                                     <p class="mb-0">XP</p>
                                     <h5 class="mb-0">Amount</h5>
