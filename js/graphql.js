@@ -1,32 +1,30 @@
 const queryUser = `
 {
-  user{
-      login,
-      firstName,
-      lastName,
-      email,
-      attrs
-      campus,
-      auditRatio
+  user {
+    login
+    firstName
+    lastName
+    email
+    attrs
+    campus
+    auditRatio
+  }
+  xp: transaction_aggregate(
+    where: {
+      _and: [
+        { type: { _eq: "xp" } },
+        { path: { _ilike: "%dakar/div-01%" } },
+        { path: { _nlike: "%/piscine-js/%" } }
+      ]
     }
-      xp: transaction_aggregate(
-        where: {
-          _and: [
-            { type: { _eq: "xp" } },
-            { path: { _nlike: "%/piscine-js/%" } },
-            { path: { _nlike: "%/piscine-go/%" } }
-          ]
-        }
-      ) {
-        aggregate {
-          sum {
-            amount
-          }
-        }
+  ) {
+    aggregate {
+      sum {
+        amount
       }
-    
-  },
-
+    }
+  }
+}
 `
 
 const lastBigProjects =  `
