@@ -107,9 +107,6 @@ function Profile(xp, user, audits, chartData, barData, level){
                             <span class="fw-medium text-primary">Git:</span> ${user.login}
                         </div>
                         <div class="col-sm-6 py-1">
-                            <span class="fw-medium text-primary">Id:</span> ${user.id}
-                        </div>
-                        <div class="col-sm-6 py-1">
                             <span class="fw-medium text-primary">Email:</span> ${user.email}
                         </div>
                         <div class="col-sm-6 py-1">
