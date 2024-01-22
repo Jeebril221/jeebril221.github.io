@@ -236,7 +236,7 @@ function addAudits(audits) {
     var parentElement = document.getElementById('section');
     const title = document.createElement('h1');
     title.classList.add('title', 'mb-5', 'pb-3');
-    title.textContent = 'Your last 10 audits';
+    title.textContent = 'Your last audits';
 
     parentElement.appendChild(title);
 

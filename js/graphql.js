@@ -11,11 +11,16 @@ const queryUser = `
   }
   xp: transaction_aggregate(
     where: {
-      _and: [
-        { type: { _eq: "xp" } },
-        { path: { _ilike: "%dakar/div-01%" } },
-        { path: { _nlike: "%/piscine-js/%" } }
-      ]
+				event: {
+          object: {
+            type: {
+              _eq: "module"
+            }
+          }
+        }
+      type: {
+        _eq: "xp"
+      }
     }
   ) {
     aggregate {
